@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-primary: #00AEEF;
+    --brand-dark: #010406;
+    --brand-cyan: #00AEEF;
+  }
+
+  body {
+    @apply bg-[#010406] text-slate-400 antialiased selection:bg-[#00AEEF]/30 selection:text-white;
+    overflow-x: hidden;
+  }
+
+  /* Custom Premium Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #010406;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
+    border: 2px solid #010406;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00AEEF;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-2xl bg-white/5 border border-white/10 shadow-2xl;
+  }
+
+  .premium-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-[#00AEEF];
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Pro Cinematic Glow Effect */
+  .card-glow {
+    position: relative;
+  }
+  
+  .card-glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(45deg, transparent, rgba(0, 174, 239, 0.2), transparent);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .card-glow:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Stable dot pattern for dark mode */
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(0, 174, 239, 0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

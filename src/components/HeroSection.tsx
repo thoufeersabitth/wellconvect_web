@@ -8,11 +8,10 @@ export function HeroSection() {
   const [isReady, setIsReady] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(1);
   
-  // ELITE PERFORMANCE CONFIG
   const TOTAL_FRAMES = 241;
   const fps = 24;
 
-  // DRAW LOGIC
+  // DRAW LOGIC - FULL HD RETINA QUALITY
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     if (!canvas || imagesRef.current.length === 0) return;
@@ -40,7 +39,7 @@ export function HeroSection() {
     ctx.drawImage(img, sx, sy, sw, sh);
   }, [TOTAL_FRAMES]);
 
-  // ASSET LOADER - FULL LOCKDOWN UNTIL COMPLETE
+  // ASSET LOADER - FAST PARALLEL FETCH
   useEffect(() => {
     let loaded = 0;
     const images: HTMLImageElement[] = [];
@@ -49,11 +48,11 @@ export function HeroSection() {
       loaded++;
       setImagesLoaded(loaded);
       if (loaded === TOTAL_FRAMES) {
-        // Artificial delay for cinematic feel if it loads too fast
-        setTimeout(() => setIsReady(true), 800);
+        setIsReady(true);
       }
     };
 
+    // Parallel loading burst
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
       const padded = String(i).padStart(3, '0');
@@ -79,7 +78,7 @@ export function HeroSection() {
     return () => window.removeEventListener('resize', updateSize);
   }, [TOTAL_FRAMES, drawFrame]);
 
-  // AUTO-PLAY ENGINE
+  // ANIMATION ENGINE
   useEffect(() => {
     if (!isReady) return;
 
@@ -108,39 +107,39 @@ export function HeroSection() {
   return (
     <section className="relative w-full h-screen bg-[#010406] overflow-hidden">
       
-      {/* LOADING OVERLAY - FULL SITE LOCKDOWN */}
+      {/* GLOBAL PRELOADER - FULL SITE LOCKDOWN */}
       <AnimatePresence>
         {!isReady && (
           <motion.div 
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="fixed inset-0 z-[5000] bg-[#010406] flex items-center justify-center p-6"
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="fixed inset-0 z-[6000] bg-[#010406] flex items-center justify-center p-10"
           >
-             <div className="flex flex-col items-center gap-10 max-w-md w-full">
-                {/* Spinning Core */}
+             <div className="flex flex-col items-center gap-10 max-w-sm w-full">
+                {/* Dual Core Spinner */}
                 <div className="relative w-24 h-24">
                    <div className="absolute inset-0 border-4 border-white/5 border-t-[#00AEEF] rounded-full animate-spin shadow-[0_0_30px_rgba(0,174,239,0.4)]" />
                    <div className="absolute inset-4 border-2 border-white/5 border-b-[#00AEEF] rounded-full animate-[spin_1.5s_linear_infinite_reverse]" />
                 </div>
 
                 <div className="flex flex-col items-center w-full">
-                   <div className="flex justify-between w-full mb-3 px-1">
-                      <span className="text-[10px] font-black text-[#00AEEF] tracking-[0.4em] uppercase">Visual Engine</span>
-                      <span className="text-[10px] font-mono text-white/40">{Math.round((imagesLoaded / TOTAL_FRAMES) * 100)}%</span>
+                   <div className="flex justify-between w-full mb-3 px-1 font-mono text-[10px] tracking-widest">
+                      <span className="text-[#00AEEF] font-black uppercase">Visual Engine</span>
+                      <span className="text-white/40">{Math.round((imagesLoaded / TOTAL_FRAMES) * 100)}%</span>
                    </div>
                    
-                   {/* Progress Bar */}
-                   <div className="w-full h-[3px] bg-white/5 rounded-full overflow-hidden">
+                   {/* Neon Progress Bar */}
+                   <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
                       <motion.div 
                         initial={{ width: 0 }}
                         animate={{ width: `${(imagesLoaded / TOTAL_FRAMES) * 100}%` }}
-                        className="h-full bg-gradient-to-r from-[#00AEEF] to-blue-400 shadow-[0_0_15px_#00AEEF]"
+                        className="h-full bg-[#00AEEF] shadow-[0_0_15px_#00AEEF]"
                       />
                    </div>
                    
-                   <span className="mt-8 text-[9px] font-black text-white/30 tracking-[0.5em] uppercase animate-pulse">
-                      Initializing Cinematic Core
+                   <span className="mt-8 text-[9px] font-black text-white/20 tracking-[0.6em] uppercase animate-pulse">
+                      Synchronizing System Core
                    </span>
                 </div>
              </div>
@@ -152,7 +151,7 @@ export function HeroSection() {
       <div 
         className="absolute inset-0 w-full h-full z-10"
         style={{ 
-          filter: 'contrast(1.1) brightness(0.9) saturate(1.05)', 
+          filter: 'contrast(1.1) brightness(0.95) saturate(1.05)', 
         }}
       >
         <canvas 
@@ -172,9 +171,9 @@ export function HeroSection() {
       {/* TEXT LAYER */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-40">
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={isReady ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isReady ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 1.5, ease: "easeOut" }}
         >
           <h1 className="text-[12vw] md:text-[10rem] font-black text-white tracking-[0.05em] leading-none mb-4 uppercase drop-shadow-[0_0_60px_rgba(0,174,239,0.4)] whitespace-nowrap">
             Well Connect

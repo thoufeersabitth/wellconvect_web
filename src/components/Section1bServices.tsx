@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Monitor, Fingerprint, Network, Code, ArrowUpRight, Terminal, Video, Smartphone, Cpu, Lock, Activity, Server, Zap } from 'lucide-react';
 import { TiltCard } from './ui/TiltCard';

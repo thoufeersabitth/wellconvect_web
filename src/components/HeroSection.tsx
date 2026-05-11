@@ -1,8 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TOTAL_FRAMES = 241;
-
 export function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -10,7 +8,11 @@ export function HeroSection() {
   const [isReady, setIsReady] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(1);
   
-  // DRAW LOGIC - ENHANCED FOR REALISM
+  // ELITE PERFORMANCE CONFIG
+  const TOTAL_FRAMES = 241;
+  const fps = 24;
+
+  // DRAW LOGIC
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
     if (!canvas || imagesRef.current.length === 0) return;
@@ -23,24 +25,22 @@ export function HeroSection() {
     const cw = canvas.width;
     const ch = canvas.height;
     
-    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 1.1;
+    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
     const sw = img.naturalWidth * scale;
     const sh = img.naturalHeight * scale;
     
     const sx = (cw - sw) / 2;
-    const sy = ch - sh; // Bottom align
+    const sy = ch - sh; 
 
-    // Apply Cinematic Base Clear
     ctx.fillStyle = '#010406';
     ctx.fillRect(0, 0, cw, ch);
     
-    // Draw image with better rendering quality
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(img, sx, sy, sw, sh);
-  }, []);
+  }, [TOTAL_FRAMES]);
 
-  // ASSET LOADER
+  // ASSET LOADER - FULL LOCKDOWN UNTIL COMPLETE
   useEffect(() => {
     let loaded = 0;
     const images: HTMLImageElement[] = [];
@@ -49,7 +49,8 @@ export function HeroSection() {
       loaded++;
       setImagesLoaded(loaded);
       if (loaded === TOTAL_FRAMES) {
-        setIsReady(true);
+        // Artificial delay for cinematic feel if it loads too fast
+        setTimeout(() => setIsReady(true), 800);
       }
     };
 
@@ -69,38 +70,35 @@ export function HeroSection() {
         const dpr = Math.min(window.devicePixelRatio || 2, 2);
         canvas.width = window.innerWidth * dpr;
         canvas.height = window.innerHeight * dpr;
+        if (imagesRef.current[0]) drawFrame(1);
       }
     };
 
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  }, [TOTAL_FRAMES, drawFrame]);
 
-  // AUTO-PLAY "VIDEO" ENGINE - STABLE FPS
+  // AUTO-PLAY ENGINE
   useEffect(() => {
     if (!isReady) return;
 
     let frameId: number;
     let startTime = performance.now();
-    const fps = 24; // Cinematic 24fps feels more realistic
     const interval = 1000 / fps;
 
     const animate = (time: number) => {
       const elapsed = time - startTime;
       if (elapsed > interval) {
         startTime = time - (elapsed % interval);
-        setCurrentFrame(prev => {
-          const next = prev + 1;
-          return next > TOTAL_FRAMES ? 1 : next;
-        });
+        setCurrentFrame(prev => (prev + 1 > TOTAL_FRAMES ? 1 : prev + 1));
       }
       frameId = requestAnimationFrame(animate);
     };
 
     frameId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frameId);
-  }, [isReady]);
+  }, [isReady, TOTAL_FRAMES, fps]);
 
   // RENDER CURRENT FRAME
   useEffect(() => {
@@ -110,11 +108,51 @@ export function HeroSection() {
   return (
     <section className="relative w-full h-screen bg-[#010406] overflow-hidden">
       
-      {/* THE MACHINE - ENHANCED FOR REALISM */}
+      {/* LOADING OVERLAY - FULL SITE LOCKDOWN */}
+      <AnimatePresence>
+        {!isReady && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="fixed inset-0 z-[5000] bg-[#010406] flex items-center justify-center p-6"
+          >
+             <div className="flex flex-col items-center gap-10 max-w-md w-full">
+                {/* Spinning Core */}
+                <div className="relative w-24 h-24">
+                   <div className="absolute inset-0 border-4 border-white/5 border-t-[#00AEEF] rounded-full animate-spin shadow-[0_0_30px_rgba(0,174,239,0.4)]" />
+                   <div className="absolute inset-4 border-2 border-white/5 border-b-[#00AEEF] rounded-full animate-[spin_1.5s_linear_infinite_reverse]" />
+                </div>
+
+                <div className="flex flex-col items-center w-full">
+                   <div className="flex justify-between w-full mb-3 px-1">
+                      <span className="text-[10px] font-black text-[#00AEEF] tracking-[0.4em] uppercase">Visual Engine</span>
+                      <span className="text-[10px] font-mono text-white/40">{Math.round((imagesLoaded / TOTAL_FRAMES) * 100)}%</span>
+                   </div>
+                   
+                   {/* Progress Bar */}
+                   <div className="w-full h-[3px] bg-white/5 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(imagesLoaded / TOTAL_FRAMES) * 100}%` }}
+                        className="h-full bg-gradient-to-r from-[#00AEEF] to-blue-400 shadow-[0_0_15px_#00AEEF]"
+                      />
+                   </div>
+                   
+                   <span className="mt-8 text-[9px] font-black text-white/30 tracking-[0.5em] uppercase animate-pulse">
+                      Initializing Cinematic Core
+                   </span>
+                </div>
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* THE MACHINE */}
       <div 
         className="absolute inset-0 w-full h-full z-10"
         style={{ 
-          filter: 'contrast(1.15) brightness(0.95) saturate(1.1) contrast(1.1)', // Cinematic Grade
+          filter: 'contrast(1.1) brightness(0.9) saturate(1.05)', 
         }}
       >
         <canvas 
@@ -123,71 +161,32 @@ export function HeroSection() {
           style={{ 
             width: '100vw', 
             height: '100vh',
-            imageRendering: 'auto'
           }} 
         />
       </div>
 
-      {/* FILM GRAIN OVERLAY */}
-      <div className="absolute inset-0 z-15 opacity-[0.03] pointer-events-none mix-blend-screen bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-pulse" />
+      <div className="absolute inset-0 z-15 opacity-[0.02] pointer-events-none mix-blend-screen bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-pulse" />
+      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/60 via-transparent to-[#010406]" />
+      <div className="absolute inset-0 z-21 pointer-events-none bg-[radial-gradient(circle_at_50%_70%,rgba(0,174,239,0.08)_0%,transparent_70%)]" />
 
-      {/* BLOOM / RADIANT GLOW */}
-      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/80 via-transparent to-[#010406]" />
-      <div className="absolute inset-0 z-21 pointer-events-none bg-[radial-gradient(circle_at_50%_70%,rgba(0,174,239,0.1)_0%,transparent_70%)]" />
-
-      {/* CINEMATIC TEXT */}
+      {/* TEXT LAYER */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-40">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isReady ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
         >
           <h1 className="text-[12vw] md:text-[10rem] font-black text-white tracking-[0.05em] leading-none mb-4 uppercase drop-shadow-[0_0_60px_rgba(0,174,239,0.4)] whitespace-nowrap">
             Well Connect
           </h1>
           <div className="flex items-center justify-center gap-8">
-             <motion.div 
-               initial={{ width: 0, opacity: 0 }}
-               animate={{ width: 100, opacity: 1 }}
-               transition={{ duration: 1.2, delay: 0.8 }}
-               className="h-[1px] bg-[#00AEEF]/50" 
-             />
-             <span className="text-xs md:text-sm font-black text-[#00AEEF] tracking-[0.8em] uppercase drop-shadow-[0_0_10px_#00AEEF]">IT Solutions & Services</span>
-             <motion.div 
-               initial={{ width: 0, opacity: 0 }}
-               animate={{ width: 100, opacity: 1 }}
-               transition={{ duration: 1.2, delay: 0.8 }}
-               className="h-[1px] bg-[#00AEEF]/50" 
-             />
+             <div className="h-[1px] w-12 md:w-24 bg-[#00AEEF]/50" />
+             <span className="text-[10px] md:text-sm font-black text-[#00AEEF] tracking-[0.6em] md:tracking-[0.8em] uppercase drop-shadow-[0_0_10px_#00AEEF]">IT Solutions & Services</span>
+             <div className="h-[1px] w-12 md:w-24 bg-[#00AEEF]/50" />
           </div>
         </motion.div>
       </div>
 
-      {/* LOADING HUD */}
-      <AnimatePresence>
-        {!isReady && (
-          <motion.div 
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 z-[100] bg-[#010406] flex items-center justify-center"
-          >
-             <div className="flex flex-col items-center gap-6">
-                <div className="w-20 h-20 border-2 border-white/5 border-t-[#00AEEF] rounded-full animate-spin shadow-[0_0_20px_rgba(0,174,239,0.4)]" />
-                <div className="flex flex-col items-center">
-                  <span className="text-[10px] font-mono text-[#00AEEF] tracking-[0.5em] uppercase mb-4 animate-pulse">Initializing 1080p Visual Engine</span>
-                  <div className="w-64 h-1 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(imagesLoaded / TOTAL_FRAMES) * 100}%` }}
-                      className="h-full bg-[#00AEEF] shadow-[0_0_15px_#00AEEF]"
-                    />
-                  </div>
-                </div>
-             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* BOTTOM SCANLINE EFFECT */}
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-[#00AEEF]/20 z-30 shadow-[0_0_20px_#00AEEF] animate-pulse" />
 
     </section>

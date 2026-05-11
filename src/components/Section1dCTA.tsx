@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { Phone, Sparkles, Cpu, Cloud } from 'lucide-react';
+import { Phone, Sparkles, Cpu } from 'lucide-react';
 
 export function Section1dCTA() {
   return (

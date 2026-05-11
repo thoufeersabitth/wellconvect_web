@@ -1,15 +1,8 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Activity, Video, Link as LinkIcon, Layers, Zap, ArrowUpRight } from 'lucide-react';
 
-/* ── Floating tech particles for the background/cards ──────────── */
-const PARTICLES = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 80 + 10,
-  y: Math.random() * 80 + 10,
-  delay: i * 0.5,
-  duration: 5 + Math.random() * 5
-}));
+import { motion } from 'framer-motion';
+import { Terminal, Activity, Video, Link as LinkIcon, Layers, ArrowUpRight } from 'lucide-react';
+
+
 
 const services = [
   {

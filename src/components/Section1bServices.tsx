@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Monitor, Fingerprint, Network, Code, ArrowUpRight, Terminal, Video, Smartphone, Cpu, Lock, Activity, Server, Zap, Globe, Globe2 } from 'lucide-react';
+import { Shield, Monitor, Fingerprint, Network, Code, ArrowUpRight, Terminal, Video, Smartphone, Cpu, Lock, Activity, Server, Zap } from 'lucide-react';
 import { TiltCard } from './ui/TiltCard';
 
 /* ── Floating tech particles for each card type ──────────── */

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { CheckCircle2, Zap } from 'lucide-react';
 
 const stats = [

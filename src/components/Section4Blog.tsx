@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { ArrowRight, User, Calendar } from 'lucide-react';
+import { ArrowRight, User } from 'lucide-react';
 
 const blogs = [
   {

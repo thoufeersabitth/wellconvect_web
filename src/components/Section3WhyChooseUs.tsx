@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Zap, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { CheckCircle2, Zap } from 'lucide-react';
 
 const stats = [
   { label: 'Years Experience', value: 15, suffix: '+' },
@@ -20,72 +20,8 @@ const reasons = [
   "We develop solutions that align perfectly with your business goals."
 ];
 
-function Counter({ value, suffix }: { value: number, suffix: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0;
-      const end = value;
-      const duration = 2000;
-      const increment = end / (duration / 16);
-
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= end) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(start));
-        }
-      }, 16);
-      return () => clearInterval(timer);
-    }
-  }, [value, isInView]);
-
-  return (
-    <span ref={ref} className="text-6xl md:text-8xl font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(0,174,239,0.3)]">
-      {count}{suffix}
-    </span>
-  );
-}
-
-const CharacterReveal = ({ text, className }: { text: string, className?: string }) => {
-  const characters = text.split("");
-  return (
-    <h2 className={className}>
-      {characters.map((char, index) => (
-        <motion.span
-          key={index}
-          initial={{ opacity: 0, y: 50, rotateX: -90 }}
-          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{
-            type: "spring",
-            damping: 12,
-            stiffness: 100,
-            delay: index * 0.03
-          }}
-          viewport={{ once: true }}
-          className="inline-block transform-gpu origin-bottom"
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </h2>
-  );
-};
-
 export function Section3WhyChooseUs() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
-  const yParallax = useSpring(useTransform(scrollYProgress, [0, 1], [150, -150]), springConfig);
 
   return (
     <section ref={containerRef} className="py-40 bg-transparent relative overflow-hidden z-10">

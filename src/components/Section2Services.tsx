@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { Video, ShieldCheck, Activity, Layers, Link as LinkIcon, Bell, Monitor, ArrowUpRight, Globe } from 'lucide-react';
+import { Video, ShieldCheck, Activity, Layers, Link as LinkIcon, Bell, Monitor, ArrowUpRight } from 'lucide-react';
 
 const services = [
   {
